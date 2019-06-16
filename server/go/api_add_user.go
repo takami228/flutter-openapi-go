@@ -11,10 +11,25 @@ package openapi
 
 import (
 	"net/http"
+	"strconv"
+
+	"github.com/mholt/binding"
 )
 
 // UserAddPost - Create a new User
 func UserAddPost(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	w.WriteHeader(http.StatusOK)
+	user := new(User)
+	userMap := GetUserMap()
+	binding.Bind(r, user)
+	user.Id = strconv.Itoa(len(userMap))
+	userMap[int64(len(userMap))] = user
+}
+
+func (user *User) FieldMap(req *http.Request) binding.FieldMap {
+	return binding.FieldMap{
+		&user.Name: "name",
+		&user.Age:  "age",
+	}
 }

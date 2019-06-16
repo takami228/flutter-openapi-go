@@ -10,6 +10,7 @@
 package openapi
 
 import (
+	"encoding/json"
 	"net/http"
 )
 
@@ -17,4 +18,11 @@ import (
 func UsersGet(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	w.WriteHeader(http.StatusOK)
+	userMap := GetUserMap()
+	values := []*User{}
+	for _, v := range userMap {
+		values = append(values, v)
+	}
+
+	json.NewEncoder(w).Encode(values)
 }

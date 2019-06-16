@@ -9,11 +9,19 @@
 
 package openapi
 
-type User struct {
+var inMemoryUserMap = map[int64]*User{}
 
+type User struct {
 	Id string `json:"id,omitempty"`
 
 	Name string `json:"name"`
 
 	Age int64 `json:"age"`
+}
+
+func GetUserMap() map[int64]*User {
+	if inMemoryUserMap == nil {
+		inMemoryUserMap = map[int64]*User{}
+	}
+	return inMemoryUserMap
 }
